@@ -1,0 +1,300 @@
+1.
+#pragma warning(disable:4996)
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+#define MAX 1000
+
+char*words[MAX];
+int count[MAX];
+int n = 0;
+
+int store();
+void call(int n);
+
+int main(void)
+{
+	store();
+	call(n);
+
+	return 0;
+}
+
+int store() {
+	FILE*fp = fopen("harry.txt", "r");
+
+	char w_length[MAX];
+
+	while (fscanf(fp, "%s", w_length) != EOF) {
+		if (strlen(w_length) >= 6) {
+			if (n == 0) {
+				words[n] = strdup(w_length);
+				n++;
+			}
+
+			for (int i = n - 1; i >= 0; i--) {
+				if (strcmp(words[i], w_length) == 0) {
+					count[i]++;
+					break;
+				}
+				else if (strcmp(words[i], w_length) < 0) {
+					if (i == n - 1) {
+						words[i + 1] = strdup(w_length);
+						count[i + 1]++;
+						n++;
+						break;
+					}
+					else {
+						for (int j = n; j > i + 1; j--) {
+							words[j] = words[j - 1];
+							count[j] = count[j - 1];
+						}
+						words[i + 1] = strdup(w_length);
+						count[i + 1] = 1;
+						n++;
+						break;
+					}
+				}
+				else if (i == 0) {
+					for (int k = n; k > i; k--) {
+						words[k] = words[k - 1];
+						count[k] = count[k - 1];
+					}
+					words[i] = strdup(w_length);
+					count[i] = 1;
+					n++;
+					break;
+				}
+			}
+		}
+	}
+	fclose(fp);
+	return n;
+}
+
+void call(int n) {
+	FILE*out_fp = fopen("words.txt", "w");
+	for (int i = 0; i < n; i++) {
+		fprintf(out_fp, "%s : %d\n", words[i], count[i]);
+	}
+	fclose(out_fp);
+}
+
+harry.txt
+banana
+apple
+pineapple
+watermelon
+orange
+strawberry
+cherry
+strawberry
+pineapple
+coconut
+melon
+
+2.
+#pragma warning(disable:4996)
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+#include<time.h>
+#define MAX 1000
+
+char*words[MAX];
+int n = 0;
+
+int store();
+void hangman(int n);
+
+int main(void) 
+{
+	store();
+	hangman(n);
+}
+
+int store() {
+	FILE*fp = fopen("harry.txt", "r");
+
+	char w_length[MAX];
+
+	while (fscanf(fp, "%s", w_length) != EOF) {
+		if (strlen(w_length) >= 6) {
+			if (n == 0) {
+				words[n] = strdup(w_length);
+				n++;
+			}
+
+			for (int i = n - 1; i >= 0; i--) {
+				if (strcmp(words[i], w_length) == 0) {
+					break;
+				}
+				else if (strcmp(words[i], w_length) < 0) {
+					if (i == n - 1) {
+						words[i + 1] = strdup(w_length);
+						n++;
+						break;
+					}
+					else {
+						for (int j = n; j > i + 1; j--) {
+							words[j] = words[j - 1];
+						}
+						words[i + 1] = strdup(w_length);
+						n++;
+						break;
+					}
+				}
+				else if (i == 0) {
+					for (int k = n; k > i; k--) {
+						words[k] = words[k - 1];
+					}
+					words[i] = strdup(w_length);
+					n++;
+					break;
+				}
+			}
+		}
+	}
+	fclose(fp);
+	return n;
+}
+
+void hangman(int n)
+{
+	while (1) {
+		srand((unsigned int)time(NULL));
+		int i = rand() % n;
+		char g_word[100];
+		strcpy(g_word, words[i]);
+		for (int o = 0; o < strlen(words[i]); o++)
+			printf("*");
+		printf("\n");
+		int count[100] = { 0 };
+		while (1) {
+			int cnt = 0;
+			char alphabet;
+			printf("Guess an alphabet:");
+			scanf(" %c", &alphabet);
+			for (int l = 0; l < strlen(words[i]); l++) {
+				if (g_word[l] == alphabet)
+					count[l] = 1;
+			}
+			for (int j = 0; j < strlen(words[i]); j++) {
+				if (count[j] == 1)
+					printf("%c", g_word[j]);
+				else {
+					printf("*");
+					cnt++;
+				}
+			}
+			printf("\n");
+			if (cnt == 0)
+				break;
+		}
+		char answer[10];
+		printf("Try again (y/n)?");
+		scanf("%s", answer);
+		if (strcmp(answer, "n") == 0)
+			break;
+	}
+}
+
+3.
+#pragma warning(disable:4996)
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+#define MAX 300
+
+char *words[100];
+int index = 0;
+FILE*fp = fopen("tabular.txt", "r");
+FILE*out_fp = fopen("output1.txt", "w");
+int table(char data[300], int limit) {
+	int ch, i = 0;
+	while ((ch = fgetc(fp)) != '\\') {
+		if (ch == EOF)
+			return -1;
+		if (ch == '\n') {
+			data[i++] = ' ';
+			continue;
+		}
+		if (i < limit - 1 && (ch != ' ' || i > 0 && data[i - 1] != ' '))
+			data[i++] = ch;
+	}
+	for (int p = 1; p < i; p++)
+		data[p - 1] = data[p];
+	if (i > 0 && data[i - 1] == ' ')
+		i--;
+	data[i] = '\0';
+	return i;
+}
+int main(void) {
+	int a = 0, b = 0;
+	fscanf(fp, "%d", &a);
+	fscanf(fp, "%d", &b);
+	char space[] = "&";
+	int j = 0, y;
+	int max[4] = { 0 };
+	char *token[MAX];
+	int p;
+	while (1) {
+		char buf[MAX];
+		char buffer[MAX];
+		int length = table(buf, MAX);
+		token[j] = strtok(buf, space);
+
+		if (strlen(token[0]) == 0)
+			continue;
+		strcpy(buffer, token[j]);
+		for (p = strlen(buffer) - 1; buffer[p] == ' '; p--);
+		p++;
+		buffer[p] = '\0';
+		strcpy(token[j], buffer);
+		//
+		if (strlen(token[j]) > max[0])
+			max[0] = strlen(token[j]);
+		words[index] = strdup(token[j]);
+		while ((token[++j] = strtok(NULL, space)) != NULL) {
+			strcpy(buffer, token[j]);
+			for (p = strlen(buffer) - 1; buffer[p] == ' '; p--);
+			p++;
+			buffer[p] = '\0';
+			for (y = 1; y < strlen(buffer); y++)
+				buffer[y - 1] = buffer[y];
+			y--;
+			buffer[y] = '\0';
+			strcpy(token[j], buffer);
+			//
+			if (j % 4 == 1 && strlen(token[j]) > max[1])
+				max[1] = strlen(token[j]);
+			else if (j % 4 == 2 && strlen(token[j]) > max[2])
+				max[2] = strlen(token[j]);
+			else if (j % 4 == 3 && strlen(token[j]) > max[3])
+				max[3] = strlen(token[j]);
+			words[++index] = strdup(token[j]);
+		}
+		if (length == -1)
+			break;
+		//
+		words[++index] = strdup(token[j]);
+	}
+	for (int i = 0; i < 16; i++) {
+		fprintf(out_fp, "%s", words[i]);
+		for (int o = 0; o < max[i % 4] - strlen(words[i]) + 1; o++)
+			fprintf(out_fp, " ");
+		if (i % 4 == 3 && i != 15)
+			fprintf(out_fp, "\n");
+	}
+	fclose(fp);
+	fclose(out_fp);
+}
+
+tabular.txt
+4 4       
+Audio  &  www.ti.com/audio     &   Automotive   and  Transportation  & www.ti.com/automotive  \\
+Amplifiers &   & Communications and Telecom      
+     & www.ti.com/communications  \\
+Data Converters   &      dataconverter.ti.com   
+&   & www.ti.com/computers  \\  
+     & www.dlp.com   &     Consumer   Electronics     & www.ti.com/consumer-apps 

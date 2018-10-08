@@ -1,0 +1,111 @@
+1.
+#pragma warning(disable:4996)
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+#define MAX 50
+
+int main(void)
+{
+	char str[MAX];
+	int string[MAX];
+	char seps[MAX] = ".";
+	char*token[MAX];
+	int i = 0;
+	
+	printf("IP를 입력하시오: ");
+	gets(str);
+
+	token[0] = strtok(str, seps);
+
+	while (token[i] != NULL) {
+		token[i + 1] = strtok(NULL, seps);
+		i++;
+	}
+
+	for (int j = 0; j < i; j++) {
+		string[j] = atoi(token[j]);
+	}
+	for (int j = 0; j < i; j++){
+		if (0 > string[j] || string[j] > 255) {
+			printf("No\n");
+			return 0;
+		}
+	}
+	printf("Yes\n");
+}
+
+2.
+#pragma warning(disable:4996)
+#include<stdio.h>
+#include<string.h>
+#define MAX 81
+
+FILE*fp = fopen("harry.txt", "r");
+FILE*fp_out = fopen("aligned.txt", "w");
+char *first[100000];
+int first_letter = 0;
+
+int paragraph();
+
+int main(void) {
+	int pg = paragraph();
+	while (1) {
+		if (pg == 1)
+			break;
+		pg = paragraph();
+	}
+	fclose(fp);
+	fclose(fp_out);
+}
+
+int paragraph() {
+	int length = 0, num = 0, blank, last = 0, ch = 0;
+	char*words[100], buffer[100];
+	if (first_letter != 0 && strlen(first[first_letter - 1]) != 0) {
+		words[num] = first[first_letter - 1];
+		length += (strlen(words[num++]) + 1);
+	}
+	fscanf(fp, "%s", buffer);
+	while (length < MAX) {
+		words[num] = strdup(buffer);
+		length += (strlen(words[num++]) + 1);
+		if ((ch = fgetc(fp)) == '\n') {
+			if ((ch = fgetc(fp)) == '\n') {
+				last = 1;
+				break;
+			}
+			fseek(fp, -1, SEEK_CUR);
+		}
+		if (fscanf(fp, "%s", buffer) == EOF) {
+			last = 2;
+			break;
+		}
+		if (strlen(buffer) >= (MAX - length)) {
+			break;
+		}
+	}
+	blank = MAX - length;
+	if (last != 0)
+		blank = 0;
+	int count = 0;
+	for (int i = 0; i < num; i++) {
+		fprintf(fp_out, "%s", words[i]);
+		if (i != num - 1)
+			fprintf(fp_out, " ");
+		if (blank > 0 && count < blank) {
+			fprintf(fp_out, " ");
+			count++;
+			length++;
+		}
+	}
+	if (last == 1)
+		fprintf(fp_out, "\n");
+	if (last == 2)
+		return 1;
+	fprintf(fp_out, "\n");
+	if (last == 1)
+		strcpy(buffer, "\0");
+	first[first_letter++] = strdup(buffer);
+	return 0;
+}
