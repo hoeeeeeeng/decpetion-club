@@ -1,2 +1,2 @@
 # decpetion-club
-A reporsitory for university assignements
+A repository for university assignments
