@@ -1,0 +1,188 @@
+1.
+#pragma warning(disable:4996)
+
+#include <stdio.h>
+#define MAX 100
+int main(void) {
+	int m, n;
+	int data[MAX];
+	int i, k;
+	int max = -1;
+	printf("n 입력 : ");
+	scanf("%d", &n);
+	printf("%d개의 정수를 입력하시오 :\n", n);
+	for (i = 0; i < n; i++) {
+		printf("%d 번째 : ", i + 1);
+		scanf("%d", &data[i]);
+	}
+	printf("k 입력 : ");
+	scanf("%d", &k);
+	for (i = 0; i < n; i++) {
+		if (data[i] <= k) {
+			if (max == -1)
+                                                  max = i;
+			if (data[max] < data[i])
+				max = i;
+		}
+	}
+	if (max == -1)
+		printf("-1\n");
+	else
+		printf("인덱스 : %d, 정수의 값 : %d, 차이 : %d\n", max, data[max], k - data[max]);
+	data[n] = data[n];
+
+	getchar(); getchar();
+	return 0;
+}
+
+3.
+#pragma warning(disable:4996)
+
+#include<stdio.h>
+#include<math.h>
+#define MAX 100
+
+int main(void)
+{
+	int data[MAX];
+	int n = 0, sum = 0;
+	scanf("%d", &n);
+	for (int i = 0; i < n; i++) {
+		scanf("%d", &data[i]);
+		sum += data[i];
+	}
+	double average = (double)sum / n;
+	double sq = 0.0;
+	for (int i = 0; i < n; i++)
+		sq += (data[i] - average)*(data[i] - average);
+	printf("%lf %lf", average, sqrt(sq / n));
+
+	getchar(); getchar();
+
+	return 0;
+}
+
+4.
+#pragma warning(disable:4996)
+
+#include<stdio.h>
+
+int main(void)
+{
+	int n, r, i = 0;
+	int arr[10] = { 0 };
+
+	scanf("%d", &n);
+
+	while (1) {
+		r = n % 10;
+		arr[r] += 1;
+		n /= 10;
+		
+		if (n < 1) {
+			break;
+		}
+	}
+
+		for (i = 0; i < 10; i++)
+			printf("%d ", arr[i]);
+	getchar(); getchar();
+	return 0;
+}
+
+8.
+
+#pragma warning(disable:4996)
+#include<stdio.h>
+#define MAX 100
+
+int main(void)
+{
+	int data[MAX];
+	int n = 0, k;
+
+	FILE*fp = fopen("input8.txt", "r");
+
+	while (fscanf(fp, "%d", &k) != EOF)
+		data[n++] = k;
+	fclose(fp);
+
+	for (int i = 0; i < n / 2; i++) {
+		int tmp = data[i];
+		data[i] = data[n - i - 1];
+		data[n - i - 1] = tmp;
+	}
+	for (int i = 0; i < n; i++)
+		printf("%d", data[i]);
+
+	getchar(); getchar();
+	return 0;
+}
+
+9.
+#pragma warning(disable:4996)
+
+#include<stdio.h>
+#define MAX 100
+
+int main(void)
+{
+	int data[MAX];
+	int n = 0, k;
+	int count = 0;
+
+	FILE*fp = fopen("input9.txt", "r");
+
+	while (fscanf(fp, "%d", &k) != EOF)
+		data[n++] = k;
+	fclose(fp);
+
+	int leader = data[0];
+	for (int i = 1; i < n; i++) {
+		if (data[i] >= leader) {
+			leader = data[i];
+			count++;
+			data[count] = data[i];
+			
+		}
+	}
+	printf("%d : ", count + 1);
+
+	for (int i = 0; i <= count; i++)
+		printf("%d ", data[i]);
+	
+	getchar(); getchar();
+	return 0;
+
+}
+
+10.
+#pragma warning(disable:4996)
+
+#include<stdio.h>
+#define MAX 100
+
+int main(void)
+{
+	int data[MAX];
+	int n = 0;
+	FILE*fp = fopen("input10.txt", "r");
+	while (fscanf(fp, "%d", &data[n]) != EOF) {
+		n++;
+	}
+	fclose(fp);
+
+	int result = 0;
+	for (int i = 0; i < n; i++) {
+		if (i == n - 1)
+			break;
+		else if (data[i + 1] >= data[i])
+			result += data[i + 1] - data[i];
+	
+	}
+	printf("%d ", result);
+
+	getchar(); getchar();
+
+	return 0;
+}

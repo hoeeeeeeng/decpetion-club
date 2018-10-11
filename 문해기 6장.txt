@@ -1,0 +1,206 @@
+1.
+#pragma warning(disable:4996)
+#include<stdio.h>
+#include<stdbool.h>
+#define MAX 100
+
+int main(void)
+{
+	int data[MAX];
+	int n = 0, value;
+
+	while (1) {
+		scanf("%d", &value);
+		if (value == -1)
+			break;
+
+		int duplicate = false;
+		int i = n - 1;
+		while (i >= 0 && data[i] > value) {
+			data[i + 1] = data[i];
+			i--;
+			
+		}
+		for (int i = 0; i < n; i++) {
+			if (data[i] == value) {
+				duplicate = true;
+				break;
+			}
+		}
+		
+		if (duplicate) {
+			printf("duplicate entry\n");
+			continue;
+		}
+		data[i + 1] = value;
+		n++;
+			
+		for (int i = 0; i < n; i++) 
+			printf("%d ", data[i]);
+		printf("\n");
+		
+		
+	}
+	getchar(); getchar();
+	return 0;
+}
+
+3.
+#pragma warning(disable:4996)
+#include<stdio.h>
+#define MAX 100
+
+int main(void)
+{
+	int data[MAX];
+	int n = 0;
+	
+	FILE*fp = fopen("input3.txt", "r");
+	while (fscanf(fp, "%d", &data[n]) != EOF) {
+		n++;
+	}
+	fclose(fp);
+
+	for (int i = n - 1; i > 0; i--) {
+		for (int j = 0; j < i; j++) {
+			if (data[j] > data[j + 1]) {
+				int tmp = data[j];
+				data[j] = data[j + 1];
+				data[j + 1] = tmp;
+			}
+		}
+	}
+	for (int i = 0; i < n; i++) {
+		printf("%d ", data[i]);
+	}
+
+	getchar(); getchar();
+	return 0;
+}
+
+
+5.
+#pragma warning(disable:4996)
+#include<stdio.h>
+#define MAX 100
+
+int main(void)
+{
+	int x[MAX], y[MAX];
+	int n;
+
+	scanf("%d", &n);
+	for (int i = 0; i < n; i++) {
+		scanf("%d %d", &x[i], &y[i]);
+	}
+
+	for (int i = n - 1; i > 0; i--) {
+		for (int j = 0; j < i; j++) {
+			if (x[j] > x[j + 1] || x[j] == x[j + 1] && y[j] > y[j + 1]) {
+				int tmp = x[j];
+				x[j] = x[j + 1];
+				x[j + 1] = tmp;
+				tmp = y[j];
+				y[j] = y[j + 1];
+				y[j + 1] = tmp;
+			}
+		}
+	}
+
+	for (int i = 0; i < n; i++)
+		printf("(%d %d)\n", x[i], y[i]);
+
+	getchar(); getchar();
+	return 0;
+}
+
+
+6.
+#pragma warning (disable : 4996)
+#include <stdio.h>
+#define MAX 100
+
+int main(void) {
+
+	int n, tmp, a = 0;
+	int b, count = 0;
+	int data[MAX];
+	
+	scanf("%d", &n);
+	for (int i = 0; i < n; i++) {
+		data[i] = i;
+	}
+
+	int cycle[MAX];
+
+	for (int j = 0; j < n; j++) { 
+		scanf("%d", &tmp);
+		cycle[j] = tmp;
+	}
+
+	for (int k = 0; k < n; k++) {
+		a = k;
+		while (1) {
+			if (cycle[a] == k) {
+				data[a] = -1;
+				count++;
+				break;
+			}
+
+			if (data[a] == -1) {
+				break;
+			}
+			else {
+				b = cycle[a]; 
+				data[a] = -1;
+				a = b;
+			}
+		}
+	}
+
+	printf("%d \n", count);
+
+	getchar(); getchar();
+	return 0;
+}
+
+
+7.
+#pragma warning(disable:4996)
+#include <stdio.h>
+#define MAX 100
+int main(void) {
+	int a, b, aa, bb;
+	scanf("%d %d", &a, &b);
+	int data_a[MAX], data_b[MAX];
+	bb = b;
+	aa = a;
+	int n_a = 0;
+	while (aa > 0) {
+		data_a[n_a] = aa % 10;
+		aa /= 10;
+		n_a++;
+	}
+	int n_b = 0;
+	while (bb > 0) {
+		data_b[n_b] = bb % 10;
+		bb /= 10;
+		n_b++;
+	}
+	while (n_a != 0 || n_b != 0) {
+		if (data_a[n_a] > data_b[n_b]) {
+			printf("%d %d", b, a);
+			break;
+		}
+		if (data_a[n_a] < data_b[n_b]) {
+			printf("%d %d", a, b);
+			break;
+		}
+		if (data_a[n_a] == data_b[n_b]) {
+			n_a--;
+			n_b--;
+		}
+	}
+	getchar(); getchar();
+	return 0;
+}

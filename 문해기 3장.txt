@@ -1,0 +1,205 @@
+1.
+#include<stdio.h>
+
+int main(void)
+{
+	int n, sum1 = 0, sum2 = 0;
+	int count = 0;
+	
+	while (1) {
+		scanf("%d", &n);
+		if (n % 2 == 1) {
+			sum1 += n;
+			count++;	
+		
+		}
+		else if (n % 2 == 0) {
+			sum2 += n;
+			count++;	
+		
+		}
+		if (sum1 == sum2)
+			break;
+	}
+	printf("%d", count);
+
+	return 0;
+}
+
+3.
+#include<stdio.h>
+
+int main(void)
+{
+	int a, b;
+	scanf("%d %d", &a, &b);
+	int tmp, n;
+	
+	if (a < b) {
+		tmp = a;
+		a = b;
+		b = tmp;
+	}
+	while (a <= 0 && b <= 0) {
+		scanf("%d %d", &a, &b);
+	}
+		while (1) {
+			n = a % b;
+		
+		if (a%b == 0)
+			break;
+		else {
+			a = b;
+			b = n;
+		}
+	}
+	printf("%d", b);
+	
+	return 0;
+}
+
+5.
+#include<stdio.h>
+
+int main(void)
+{
+	int n;
+	int max1 = -9999999999, max2 = -9999999999;
+
+	while (1) {
+
+		scanf("%d", &n);
+		if (n == -1)
+			break;
+
+		if (n >= max1) {
+			max2 = max1;
+			max1 = n;
+		}
+		else if (n >= max2 && max1 >= max2) {
+			max2 = n;
+		}
+
+	}
+	printf("%d %d\n", max1, max2);
+	return 0;
+}
+
+7.
+
+#include <stdio.h>
+int main(void)
+{
+	int tmp, x, x1, x2, lm = 0;
+	scanf("%d %d", &x, &x1);
+
+	if (x <= x1)
+		lm++;
+
+	while (1)
+	{
+		scanf("%d", &x2);
+		if (x2 == -1)
+			break;
+		else if (x >= x1 && x1 <= x2)
+			lm++;
+
+		tmp = x;
+		x = x1;
+		x1 = x2;
+
+	}
+
+	if (x >= x1)
+		lm++; 
+	printf("%d\n", lm);
+	return 0;
+}
+
+8-1.
+
+#include<stdio.h>
+
+int main(void)
+{
+	int income, tax, sum = 0;
+	scanf("%d", &income);
+	while(1) {
+		
+		if (income > 500000000) {
+			tax = 12000000 * 0.06 + 34000000 * 0.15 + 42000000 * 0.24 + 62000000 * 0.35 + 350000000 * 0.38 + (income - 500000000)*0.40;
+			sum += tax;
+			break;
+		}
+		else if (income > 150000000) {
+			tax = 12000000 * 0.06 + 34000000 * 0.15 + 42000000 * 0.24 + 62000000 * 0.35 + (income - 150000000)*0.38;
+			sum += tax;
+			break;
+		}
+		else if (income > 88000000) {
+			tax = 12000000 * 0.06 + 34000000 * 0.15 + 42000000 * 0.24 + (income - 88000000)*0.35;
+			sum += tax;
+			break;
+		}
+			
+		else if (income > 46000000) {
+			tax = 12000000 * 0.06 + 34000000 * 0.15 + (income - 46000000)*0.24;
+			sum += tax;
+			break;
+		}
+			
+		else if (income > 12000000) {
+			tax = 12000000 * 0.06 + (income - 12000000)*0.15;
+			sum += tax;
+			break;
+		}
+		else {
+			tax = income * 0.06;
+			sum += tax;
+			break;
+		}
+	}
+	printf("%d", sum);
+
+	return 0;
+}
+
+8-2.
+
+#include<stdio.h>
+
+int main(void)
+{
+	int income, tax = 0;
+	scanf("%d", &income);
+
+	while (income > 0) {
+		if (income > 500000000) {
+			tax += (income - 500000000)*0.40;
+			income -= (income - 500000000);
+		}
+		else if (income > 150000000) {
+			tax += (income - 150000000)*0.38;
+			income -= (income - 150000000);
+		}
+		else if (income > 88000000) {
+			tax += (income - 88000000)*0.35;
+			income -= (income - 88000000);
+		}
+		else if (income > 46000000) {
+			tax += (income - 46000000)*0.24;
+			income -= (income - 46000000);
+		}
+		else if (income > 12000000) {
+			tax += (income - 12000000)*0.15;
+			income -= (income - 12000000);
+		}
+		else {
+			tax += income * 0.06;
+			income -= income;
+		}
+	}
+	printf("%d", tax);
+
+	return 0;
+}

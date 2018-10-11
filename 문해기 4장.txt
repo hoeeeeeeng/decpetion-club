@@ -1,0 +1,264 @@
+3.
+#include <stdio.h>
+int main()
+{
+ int N;
+ scanf_s("%d", &N);
+
+ for (int y = 0; y <= N; y++){
+  if (y % 2 == 0){
+   for (int x = 0;x <= N; x++){
+    printf("%d %d \n", x, y);
+   }
+  }
+  else {
+   for (int x = N; x >= 0 && x <= N; x--){
+    printf("%d %d \n", x, y);
+
+   }
+  }
+ }
+ return 0;
+} 
+
+4.
+#include <stdio.h>
+int main()
+{
+ int K,x=0,y=0,i=0; 
+ scanf("%d", &K);
+
+ while (i<=K)
+ {
+  for (i = 0; i <= K; i++){
+   for (x = 0; x <= i; x++){
+    y = i - x;
+    printf("%d %d\n", x, y);
+    
+   }
+  }
+ }
+ return 0;
+} 
+
+7.
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+
+int main(void)
+{
+	int N, x, y;
+	int rd, count;
+	int result = 0;
+	scanf("%d", &N);
+	srand((unsigned int)time(NULL));
+	for (int i = 0; i < 1000; i++) {
+		x = 0, y = 0, count = 0;
+		for (int j = 1; j++;) {
+			rd = rand() % 4;
+			switch (rd) {
+			case 0: y++; break;
+			case 1: y--; break;
+			case 2: x++; break;
+			case 3: x--; break;	
+			}
+			count++;
+			if (x == N || y == N || x == -N || y == -N)
+				break;
+		}
+		result += count;
+	}
+	printf("%d", result / 1000);
+	return 0;
+}
+
+8.
+
+#include<stdio.h>
+#include<stdlib.h> //rand 함수 사용
+#include<time.h> //seed 값에 시간을 지정하여 매번 다른 seed 값 지정
+
+int main(void)
+{
+	srand((unsigned int)time(NULL)); //seed값에 경과시간 부여. 다른 seed 값
+
+	int count1 = 0, count2 = 0;
+	for (int i = 0; i < 1000000; i++) {
+		int a = 0;
+		for (int j = 0; j < 6; j++) {
+			int rd = rand() % 6 + 1; //주사위 값에 0은 필요x
+			if (rd == 1) {
+				a++;
+				break;
+			}
+		}
+		if (a >= 1)
+			count1++;
+
+		int b = 0;
+		for (int j = 0; j < 12; j++) {
+			int rd = rand() % 6 + 1;
+			if (rd == 1)
+				b++;
+		}
+		if (b >= 2)
+			count2++;
+	}
+	printf("%lf %lf\n", (double)count1 / 1000000, (double)count2 / 1000000);
+
+	return 0;
+}
+
+10-1.
+#include<stdio.h>
+
+int main(void)
+{
+	int x1, y1, x2, y2, a1, b1, a2, b2;
+	int tmp1, tmp2, tmp3, tmp4;
+	int length = 0, width = 0;
+
+	scanf("%d %d %d %d %d %d %d %d", &x1, &y1, &x2, &y2, &a1, &b1, &a2, &b2);
+
+	if (x1 > y1) {
+		tmp1 = x1;
+		x1 = x2;
+		x2 = tmp1;
+	}
+	if (y1 > y2) {
+		tmp2 = y1;
+		y1 = y2;
+		y2 = tmp2;
+	}
+	if (a1 > a2) {
+		tmp3 = a1;
+		a1 = a2;
+		a2 = tmp3;
+	}
+	if (b1 > b2) {
+		tmp4 = b1;
+		b1 = b2;
+		b2 = tmp4;
+	}
+
+	if (b1 < b2&&b2 <= y1 && y1 < y2)
+		printf("0");
+	else if (y1 < y2&&y2 <= b1 && b1 < b2)
+		printf("0");
+	else if (x1 < x2&&x2 <= a1 && a1 < a2)
+		printf("0");
+	else if (a1 < a2&&a2 <= x1 && x1 < x2)
+		printf("0");
+	else {
+		if (x1 <= a1 && a1 < a2&&a2 <= x2) {
+			length = a2 - a1;
+			if (y1 < b1&&b1 < y2&&y2 < b2)
+				width = y2 - b1;
+			if (y1 <= b1 && b1 < b2&&b2 <= y2)
+				width = b2 - b1;
+			if (b1 < y1&&y1 < b2&&b2 < y2)
+				width = b2 - y1;
+		}
+		else if (y1 <= b1 && b1 < b2&&b2 <= y2) {
+			width = b2 - b1;
+			if (a1 < x1&&x1 < a2&&a2 < x2)
+				length = a2 - x1;
+			if (x1 < a1&&a1 < x2&&x2 <= a2)
+				length = x2 - x1;
+		}
+		else if (b1 < y1&&y1 < y2&&y2 <= b2) {
+			width = y2 - y1;
+			if (x1 < a1&&a1 < x2&&x2 < a2)
+				length = x2 - a1;
+			if (a1 < x1&&x1 < a2&&a2 < x2)
+				length = a2 - x1;
+		}
+	}
+	printf("%d\n", length*width);
+	return 0;
+}
+
+10-2.
+#include<stdio.h>
+
+int main(void)
+{
+	int x1, y1, x2, y2, a1, b1, a2, b2;
+	int tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7, tmp8;
+	int width, height;
+	int s, t;
+
+	scanf("%d %d %d %d %d %d %d %d", &x1, &y1, &x2, &y2, &a1, &b1, &a2, &b2);
+	
+	if (x1 > x2) {
+		tmp1 = x2;
+		tmp2 = x1;
+	}
+	else {
+		tmp1 = x1;
+		tmp2 = x2;
+	}
+	
+	if (y1 > y2) {
+		tmp3 = y2;
+		tmp4 = y1;
+	}
+	else {
+		tmp3 = y1;
+		tmp4 = y2;
+	}
+	
+	if (a1 > a2) {
+		tmp5 = a2;
+		tmp6 = a1;
+	}
+	else {
+		tmp5 = a1;
+		tmp6 = a2;
+	}
+
+	if (b1 > b2) {
+		tmp7 = b2;
+		tmp8 = b1;
+	}
+	else {
+		tmp7 = b1;
+		tmp8 = b2;
+	}
+
+	if (tmp1 > tmp5) 
+		s = tmp1;
+	else 
+		s = tmp5;
+
+	if (tmp2 > tmp6)
+		t = tmp6;
+	else
+		t = tmp2;
+
+	if (s > t)
+		width = 0;
+	else
+		width = t - s;
+
+	if (tmp3 > tmp7)
+		s = tmp3;
+	else
+		s = tmp7;
+
+	if (tmp4 > tmp8)
+		t = tmp8;
+	else
+		t = tmp4;
+
+	if (s > t)
+		height = 0;
+	else
+		height = t - s;
+
+
+	printf("%d\n", width*height);
+
+	return 0;
+}

@@ -1,0 +1,243 @@
+1.
+
+#pragma warning(disable:4996)
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+#include<stdbool.h>
+#define MAX 100
+
+int main(void)
+{
+	int N, T = 10000;
+	int data[MAX][MAX];
+	int offset[][2] = { { 0,-1 },{ 1,0 },{ 0,1 },{ -1,0 } };
+	int cnt = 0;
+	
+	srand((unsigned int)time(NULL));
+	scanf("%d", &N);
+
+	for (int t = 0; t < T; t++) {
+		int x = N / 2, y = N / 2;
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++)
+				data[i][j] = 0;
+		}
+		
+		int success = true;
+		while (x > 0 && x < N - 1 && y > 0 && y < N - 1) {
+			int count = 0;
+			int ex_been = -1;
+			data[x][y] = 1;
+			for (int k = 0; k < 4; k++) {
+				int dirx = x + offset[k][0];
+				int diry = y + offset[k][1];
+
+				if (dirx >= 0 && dirx < N && diry >= 0 && diry < N) {
+					if (data[dirx][diry] == 0) {
+						count++;
+						if (rand() % count == 0)
+							ex_been = k;
+					}
+				}
+			}
+			if (ex_been == -1) {
+				success = false;
+				break;
+			}
+			x += offset[ex_been][0];
+			y += offset[ex_been][1];
+		}
+		if (success)
+			cnt++;
+	}
+	printf("%lf\n", (double)cnt / T);
+
+	getchar(); getchar();
+	return 0;
+}
+
+
+3.
+
+#pragma warning(disable:4996)
+#include<stdio.h>
+#define MAX 200
+
+int main(void)
+{
+	int n, k;
+	int comb[MAX][MAX] = { 0 };
+
+	scanf("%d %d", &n, &k);
+
+	for (int i = 0; i <= n; i++) {
+		for (int j = 0; j <= i; j++) {
+			if (j == 0 || i == j)
+				comb[i][j] = 1;
+			else
+				comb[i][j] = comb[i - 1][j - 1] + comb[i - 1][j];
+		}
+	}
+	printf("%d\n", comb[n][k]);
+
+	getchar(); getchar();
+	return 0;
+}
+
+4.
+
+#pragma warning(disable:4996)
+#include<stdio.h>
+#include<math.h>
+#define MAX 100
+
+int main(void)
+{
+	int N;
+	int data[MAX][MAX];
+	int sum1[MAX] = { 0 }, sum2[MAX] = { 0 };
+	double sum1dev, sum2dev;
+	double sum1V[MAX] = { 0.0 }, sum2V[MAX] = { 0.0 };
+
+	FILE*fp = fopen("input4.txt", "r");
+	fscanf(fp, "%d", &N);
+
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			fscanf(fp, "%d", &data[i][j]);
+		}
+	}
+	fclose(fp);
+
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			sum1[j] += data[i][j];
+			sum2[i] += data[i][j];
+		}
+	}
+	
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			sum1dev = data[i][j] - (double)sum1[j] / N;
+		    sum2dev = data[i][j] - (double)sum2[i] / N;
+			sum1V[j] += (sum1dev * sum1dev);
+			sum2V[i] += (sum2dev * sum2dev);
+		}
+	}
+
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			printf("%d ", data[i][j]);
+		}
+		printf("%lf %lf \n", (double)sum2[i] / N, sqrt(sum2V[i] / N));
+	}
+	
+	for (int j = 0; j < N; j++)
+		printf("%lf ", (double)sum1[j] / N);
+	printf("\n");
+
+	for (int j = 0; j < N; j++)
+		printf("%lf ", sqrt(sum1V[j] / N));
+	printf("\n");
+
+	getchar(); getchar();
+}
+
+6.
+
+#pragma warning(disable:4996)
+#include <stdio.h>
+#define MAX 100
+
+int main(void) 
+{
+	int data[MAX][MAX];
+	int arr[MAX][MAX] = { 0 };
+	int n;
+	int k = 0, i = 0, j = 0;
+
+	FILE*fp = fopen("input6.txt", "r");
+	fscanf(fp, "%d", &n);
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			fscanf(fp, "%d", &data[i][j]);
+		}
+	}
+	fclose(fp);
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			arr[i][j] = 1;
+		}
+	}
+	
+	printf("%d ", data[0][0]);
+	arr[0][0] = 0;
+	while (1) {
+
+		if (k % 4 == 0) 
+			j++;
+		else if (k % 4 == 1) 
+			i++;
+		else if (k % 4 == 2) 
+			j--;
+		else i--;
+
+		if (arr[i][j] == 0)
+			break;
+
+		arr[i][j] = 0;
+
+		if ((k % 4 == 0 && arr[i][j + 1] == 0) || (k % 4 == 1 && arr[i + 1][j] == 0)
+			|| (k % 4 == 2 && arr[i][j - 1] == 0) || (k % 4 == 3 && arr[i - 1][j] == 0))
+			k++;
+
+		printf("%d ", data[i][j]);
+	}
+
+	getchar(); getchar();
+	return 0;
+}
+
+7.
+
+#pragma warning(disable:4996)
+#include <stdio.h>
+#define MAX 100
+
+int main(void) 
+{
+	int data[MAX];
+	int arr[MAX][MAX] = { 0 };
+	int n;
+	scanf("%d", &n);
+
+	for (int i = 0; i < n; i++) {
+		scanf("%d", &data[i]);
+		for (int j = 0; j < data[i]; j++) {
+			arr[i][j] = 1;
+		}
+	}
+
+	int wt = 0;
+	for (int i = 0; i < n - 1; i++) {
+		for (int j = 0; j < data[i]; j++) {
+			int cnt = 0;
+			int space = i + 1;
+			while (space < n&&arr[space][j] != 1) {
+				cnt++;
+				space++;
+			}
+			if (space < n)
+				wt += cnt;
+			else 
+				break;
+		}
+	}
+
+	printf("%d\n", wt);
+
+	getchar(); getchar();
+	return 0;
+}

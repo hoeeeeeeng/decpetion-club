@@ -1,0 +1,159 @@
+3.
+#pragma warning(disable:4996)
+#include <stdio.h>
+#define MAX 8
+
+int lenOfOverlap(int sa, int ta, int sb, int tb);
+
+int main(void)
+{
+	int data[MAX];
+	int width, height;
+
+	for (int i = 0; i < MAX; i++) {
+		scanf("%d", &data[i]);
+		int sx1, tx1, sy1, ty1, sx2, tx2, sy2, ty2;
+
+		if (data[0] > data[2]) {
+			sx1 = data[2];
+			tx1 = data[0];
+		}
+		else {
+			sx1 = data[0];
+			tx1 = data[2];
+		}
+		if (data[1] > data[3]) {
+			sy1 = data[3];
+			ty1 = data[1];
+		}
+		else {
+			sy1 = data[1];
+			ty1 = data[3];
+		}
+		if (data[4] > data[6]) {
+			sx2 = data[6];
+			tx2 = data[4];
+		}
+		else {
+			sx2 = data[4];
+			tx2 = data[6];
+		}
+		if (data[5] > data[7]) {
+			sy2 = data[7];
+			ty2 = data[5];
+		}
+		else {
+			sy2 = data[5];
+			ty2 = data[7];
+		}
+		width = lenOfOverlap(sx1, tx1, sx2, tx2);
+		height = lenOfOverlap(sy1, ty1, sy2, ty2);		
+	}
+	printf("%d\n", width*height);
+}
+int lenOfOverlap(int sa, int ta, int sb, int tb) {
+	int s, t;
+	
+	if (sa >= sb) 
+		s = sa;
+	else 
+		s = sb;
+	if (ta >= tb) 
+		t = tb;
+	else 
+		t = ta;
+	if (s > t) 
+		return 0;
+	else 
+		return t - s;
+}
+
+
+5.
+#pragma warning(disable:4996)
+#include <stdio.h> 
+#define MAX 100 
+
+int compareLexicographic(int p, int q);
+	
+int main(void) 
+{
+	int data[MAX], n = 0;
+	FILE *fp = fopen("input5.txt", "r");
+	while (!feof(fp)) fscanf(fp, "%d", &data[n++]);
+	fclose(fp);
+
+	for (int i = 1; i < n; i++) {
+		int j = i - 1, tmp = data[i];
+		while (j >= 0 && compareLexicographic(tmp, data[j]) < 0) {
+			data[j + 1] = data[j];
+			j--;
+		}
+		data[j + 1] = tmp;
+	}
+	for (int i = 0; i<n; i++)
+		printf("%d ", data[i]);
+}
+
+compareLexicographic(int p, int q)
+{
+	int digits1[20], digits2[20];
+	int k = 0;
+	
+	while (p > 0) {
+		digits1[k++] = p % 10;
+		p /= 10;
+	}
+	int h = 0;
+
+	while (q > 0) {
+		digits2[h++] = q % 10;
+		q /= 10;
+	}
+	for (int x = k - 1, y = h - 1; x >= 0 && y >= 0; x--, y--) {
+		if (digits1[x] < digits2[y]) {
+			return -1;
+		}
+		else if (digits1[x] > digits2[y]) {
+			return 1;
+		}
+	}
+	if (k > h)
+		return 1;
+	else if (k < h) 
+		return -1;
+	else
+		return 0;
+}
+
+
+6.
+#pragma warning(disable:4996)
+#include<stdio.h>
+#include<math.h>
+#define MAX 100
+
+int get_function(int x, int y);
+
+int main(void)
+{
+	int n, x;
+	int data[MAX], result1[MAX];
+	int result2 = 0;
+	scanf("%d", &n);
+	for (int i = 0; i < n * 2; i++) {
+		scanf("%d", &data[i]);
+	}
+	scanf("%d", &x);
+	for (int i = 1; i < n * 2; i += 2) {
+		result2 += data[i - 1] * get_function(x, data[i]);
+	}
+	printf("%d", result2);
+
+	return 0;
+}
+
+int get_function(int x, int y) {
+	int result = pow(x, y);
+	return result;
+}
