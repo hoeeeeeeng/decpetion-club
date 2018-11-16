@@ -1,0 +1,105 @@
+1.
+#pragma warning(disable:4996)
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define MAX 100
+
+struct Node {
+	char word[MAX];
+	int count;
+	struct Node *next;
+};
+
+struct Node *wordLists[27] = { NULL };
+
+void addFirst(int i, char *item);
+void addList(int i, char *item);
+void addAfter(struct Node *prev, char *item);
+
+int main(void)
+{
+	char harry[MAX];
+	char ignore[MAX];
+	char *harry_ignore[MAX];
+
+	int n = 0;
+
+	FILE*fp_i = fopen("ignore.txt", "r");
+	while (fscanf(fp_i, "%s", ignore) != EOF) {
+		harry_ignore[n] = strdup(ignore);
+		n++;
+	}
+	fclose(fp_i);
+
+	FILE*fp = fopen("harry.txt", "r");
+	while (fscanf(fp, "%s", harry) != EOF) {
+		if (strlen(harry) <= 2)
+			continue;
+		int i;
+		for (i = 0; i < n; i++) {
+			if (strcmp(harry_ignore[i], harry) == 0)
+				break;
+		}
+		if (i != n)
+			continue;
+
+		for (i = 1; i < 27; i++) {
+			if (harry[0] == 96 + i) {
+				break;
+			}
+		}
+		if (wordLists[i] == NULL) {
+			struct Node *tmp = (struct Node*)malloc(sizeof(struct Node));
+			strcpy(tmp->word, harry);
+			tmp->count = 1;
+			tmp->next = NULL;
+			wordLists[i] = tmp;
+		}
+		else addList(i, harry);
+
+	}
+	fclose(fp);
+
+	for (int i = 1; i < 27; i++) {
+		struct Node *p = wordLists[i];
+		while (p != NULL) {
+			printf("%s %d\n", p->word, p->count);
+			p = p->next;
+		}
+	}
+
+	return 0;
+}
+
+void addFirst(int i, char *item) {
+	struct Node *tmp = (struct Node*)malloc(sizeof(struct Node));
+	strcpy(tmp->word, item);
+	tmp->count = 1;
+	tmp->next = wordLists[i];
+	wordLists[i] = tmp;
+}
+
+void addList(int i, char *item) {
+	struct Node *p = wordLists[i];
+	struct Node *back = NULL;
+	while (p != NULL && strcmp(p->word, item) <= 0) {
+		if (strcmp(p->word, item) == 0) {
+			p->count++;
+			return;
+		}
+		back = p;
+		p = p->next;
+	}
+	if (back == NULL)
+		addFirst(i, item);
+	else addAfter(back, item);
+}
+
+void addAfter(struct Node *prev, char *item) {
+	struct Node *p = (struct Node*)malloc(sizeof(struct Node));
+	strcpy(p->word, item);
+	p->count = 1;
+	p->next = prev->next;
+	prev->next = p;
+}
